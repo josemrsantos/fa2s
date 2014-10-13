@@ -21,10 +21,12 @@ class DataAggregator(object):
         self.data_output = data_output
 
     def run(self):
+        logging.info('[START run] \n')
         data = self.prepare_output()
         logging.info(' - data extracted \n')
-        logging.debug(' - extracted data - %s', data)
+        logging.debug(' - extracted data - %s\n', data)
         self.data_output.output(data)
+        logging.info('[END run] \n')
 
     def prepare_output(self):
         ''' Aux function that receive a list of APIS, run each and returns a string with all the output'''
@@ -66,14 +68,14 @@ class DataAPI(object):
     def loadJason(self, data_raw):
         ''' Aux function - Load data into Json object'''
         data = json.loads(data_raw)
-        logging.debug(' -json data %s - %s', self.getName(), data)
+        logging.debug(' -json data %s - %s\n', self.getName(), data)
         return data
 
     def loadXML(self, url):
         ''' Aux function - Load data into XML object'''
         tree = parse(urllib.urlopen(url))
         root = tree.getroot()
-        logging.debug(' -XML data %s - %s', self.getName(), ElementTree.tostring(root, 'utf-8'))
+        logging.debug(' -XML data %s - %s\n', self.getName(), ElementTree.tostring(root, 'utf-8'))
         return root
 
 
@@ -86,6 +88,7 @@ class APIBioMedCentral(DataAPI):
     def __init__(self, max_items):
         self.max_items = max_items
         self.url = "http://www.biomedcentral.com/webapi/1.0/latest_articles.json"
+        logging.info('[Created] %s\n', self.api_name)
 
     def getData(self):
         ''' Gets data from Json, converts to list'''
@@ -112,6 +115,7 @@ class APIEuropePMC(DataAPI):
     def __init__(self, max_items):
         self.max_items = max_items
         self.url = "http://europepmc.org/Funders/RSS/AllFunders.xml"
+        logging.info('[Created] %s\n', self.api_name)
 
     def getData(self):
         ''' Gets data from XML, converts to list'''
@@ -121,7 +125,7 @@ class APIEuropePMC(DataAPI):
         if not data:
             return []
         for item in data:
-            logging.debug(' -XML data Europe PubMed Central ITEM - %s', ElementTree.tostring(item, 'utf-8'))
+            logging.debug(' -XML data Europe PubMed Central ITEM - %s \n', ElementTree.tostring(item, 'utf-8'))
         # Return [(title,url), (title, url)...]
         return [(item.find('title').text, item.find('link').text) for item in data][:self.max_items]
 
@@ -188,8 +192,6 @@ def main():
             "\nThis script should be called from another python script. A simple example:\n\n"
             "import fa2s\n"
             "import sys\n"
-            "logging = fa2s.getLogger()\n"
-            "logging.info('[START]')\n"
             "api_bio_med_central = fa2s.APIBioMedCentral(3)\n"
             "api_europe_pmc = fa2s.APIEuropePMC(3)\n"
             "output_file = fa2s.OutputFile('result.html')\n"
@@ -197,7 +199,6 @@ def main():
             " # OR aggregator = fa2s.DataAggregator([api_bio_med_central,api_europe_pmc], output_file)\n"
             "aggregator = fa2s.DataAggregator([api_bio_med_central,api_europe_pmc], output_joomla)\n"
             "aggregator.run()\n"
-            "logging.info('[END]')\n"
          )
     print(msg)
 
