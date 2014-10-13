@@ -3,13 +3,16 @@
 Get XML or JSON feeds to a Joomla article
 
 - What is fa2s ?
+
   fa2s (Feed aggregator to static) will grab the latest data form 
   feed providers and deliver its output to a Joomla article (or
   a file).
 
+
 - Why should I use it ?
   If you need an article on Joomla with the latest news from 
   some provider. 
+
 
 - What do I need ?
   Python 2.7, MySQLdb and py.test
@@ -18,6 +21,7 @@ Get XML or JSON feeds to a Joomla article
 - Where are the tests?
   Tests are in the tests/ folder.  To run the tests use the
   py.test` testing tool.  
+
 
 #### Docs
 
