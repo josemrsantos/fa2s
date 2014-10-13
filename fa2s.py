@@ -34,11 +34,11 @@ class DataAggregator(object):
         for api in self.api_list:
             data = api.getData()
             name = api.getName()
-            result += '<p class="fa2s_api">\n'
+            result += '<div class="fa2s_api">\n'
             result += '<div class="api_title">'+name+'</div>\n'
             for item in data:
                 result +='<div class="api_item"><a href="'+item[1]+'">' +item[0]+ '</a></div>\n'
-            result += '</p>\n'
+            result += '</div>\n'
         return result
 
 
