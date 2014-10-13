@@ -173,9 +173,10 @@ class OutputJoomla(DataOutput):
     def output(self, data):
         db = MySQLdb.connect(self.server, self.user, self.password, self.db )
         cursor = db.cursor()
-        sql = "UPDATE jos_content SET introtext='%s' WHERE id = '%d'" % (data,self.id)
+        sql = "UPDATE jos_content SET introtext=%s WHERE id = %s"
+        sql_data = (data,str(self.id))
         try:
-            cursor.execute(sql)
+            cursor.execute(sql,sql_data)
             db.commit()
         except Exception,e:
             print("FAIL %s" % e)
@@ -203,7 +204,7 @@ def main():
     print(msg)
 
 # Logging
-logging.basicConfig(filename='fa2s.log',level=logging.DEBUG, format='%(asctime)s %(message)s')
+logging.basicConfig(filename='fa2s.log',level=logging.INFO, format='%(asctime)s %(message)s')
 
 # Call main if not imported
 if __name__ == "__main__":
